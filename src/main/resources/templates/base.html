@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>SkyTree</title>
+
+    <style>
+        #top {
+            background: linear-gradient(to right, green, white);
+            height: 20%;
+            width: 100%;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        #bottom {
+            background: linear-gradient(to left, lightgrey, whitesmoke);
+            width: 100%;
+            height: 5%;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        h1, p {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:fragment="top" id="top">
+        <h1>SkyTree</h1>
+    </div>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+    <div th:fragment="bottom" id="bottom">
+        <p>Copyright 2018</p>
+    </div>
+</body>
+</html>

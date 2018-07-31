@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SkyTree</title>
+
+    <style>
+        #top {
+            background: linear-gradient(to right, green, white);
+            height: 20%;
+            width: 100%;
+            padding-top: 8px;
+            padding-bottom: 8px;
+        }
+
+        #bottom {
+            background: linear-gradient(to left, lightgrey, whitesmoke);
+            width: 100%;
+            height: 5%;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        h1, p, form {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="base :: top"></div>
+
+<h1>New User Registration</h1>
+<form autocomplete="off" action="#" th:action="@{/register}" th:object="${user}" method="post">
+    First Name <mark><strong>
+    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</span></strong></mark>
+    <input type="text" id="firstName" placeholder="First Name" th:field="*{firstName}" /> <br/><br/>
+
+    Last Name: <mark><strong>
+    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</span></strong></mark>
+    <input type="text" id="lastName" placeholder="Last Name" th:field="*{lastName}" /><br/><br/>
+
+    Email: <mark><strong>
+    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</span></strong></mark>
+    <input type="email" id="email" placeholder="Email" th:field="*{email}" /><br/><br/>
+
+    Username: <mark><strong>
+    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</span></strong></mark>
+    <input type="text" id="username" placeholder="Username" th:field="*{username}" /><br/><br/>
+
+    Password: <mark><strong>
+    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</span></strong></mark>
+    <input type="password" id="password" placeholder="Password" th:field="*{password}" /><br/><br/>
+
+    <button type="submit" class="btn btn-default">Submit</button> <br/><br/>
+</form>
+
+<div th:replace="base :: bottom"></div>
+</body>
+</html>
