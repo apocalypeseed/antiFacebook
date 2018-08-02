@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 public class HomeController
 {
     @Autowired
-    UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     PostRepository postRepository;
@@ -40,14 +41,9 @@ public class HomeController
         }
         else
         {
-            userRepository.save(user);
-            return "listPosts";
+            userService.saveUser(user);
+            return "redirect:/login";
         }
-    }
-
-    @RequestMapping("/")
-    public String index(){
-        return "index";
     }
 
     @RequestMapping("/login")
@@ -55,15 +51,6 @@ public class HomeController
     {
         return "login";
     }
-
-    @RequestMapping("/secure")
-    public String secure()
-    {
-        return "secure";
-    }
-
-    @RequestMapping("/base")
-    public String base() { return "base"; }
 
     @GetMapping("/postReply")
     public String postReply(Model model)
@@ -73,28 +60,29 @@ public class HomeController
     }
 
     @PostMapping("/process")
-    public String loadReplies(@ModelAttribute Post post)
+    public String loadReplies(@ModelAttribute Post post, Principal principal)
     {
-        User user = userRepository.findByUsername(post.getUsername());
+        if(principal.getName().isEmpty())
+            return "redirect:/login";
 
-        //Retrieves specific user from user repository and updates his postings
-        //Then puts user back into userRepository
-        if(user != null && user.getPassword().equals(post.getPassword()))
-        {
-            Set<Post> posts = new HashSet<Post>();
-            post.setUser(user);
-            postRepository.save(post);
+        Set<Post> posts = new HashSet<Post>();
+        post.setUser(userService.findByUsername(principal.getName()));
+        postRepository.save(post);
 
-            return "redirect:/listPosts";
-        }
-
-        return "postReply";
+        return "redirect:/";
     }
 
-    @RequestMapping("/listPosts")
+    @RequestMapping("/")
     public String listOfPosts(Model model)
     {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.findAll());
         return "listPosts";
+    }
+
+    @RequestMapping("/signOut")
+    public String signOut()
+    {
+        //Remove user from active session
+        return "signOut";
     }
 }

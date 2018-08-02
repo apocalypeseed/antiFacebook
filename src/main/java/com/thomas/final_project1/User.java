@@ -3,6 +3,7 @@ package com.thomas.final_project1;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -14,28 +15,57 @@ public class User
 
     @NotNull
     @Size(min=2)
+    @Column(name = "first_name")
     private String firstName;
 
     @NotNull
     @Size(min=2)
+    @Column(name = "last_name")
     private String lastName;
 
     @NotNull
     @Size(min=4)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @NotNull
     @Size(min=4)
+    @Column(name = "username")
     private String username;
 
     @NotNull
     @Size(min=10)
+    @Column(name = "password")
     private String password;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     @OneToMany(mappedBy = "user",
         cascade = CascadeType.ALL,
         fetch = FetchType.EAGER)
     public Set<Post> posts;
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Collection<Role> roles;
 
     public long getId() {
         return id;
