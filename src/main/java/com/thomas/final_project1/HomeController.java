@@ -1,17 +1,18 @@
 package com.thomas.final_project1;
 
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -22,6 +23,9 @@ public class HomeController
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    CloudinaryConfig cloudc;
 
     @GetMapping("/register")
     public String showRegistrationPage(Model model)
@@ -60,14 +64,26 @@ public class HomeController
     }
 
     @PostMapping("/process")
-    public String loadReplies(@ModelAttribute Post post, Principal principal)
+    public String loadReplies(@ModelAttribute Post post, Principal principal,
+                              @RequestParam("imageReceive")MultipartFile file)
     {
         if(principal.getName().isEmpty())
             return "redirect:/login";
 
+        if(file.isEmpty())
+            return "redirect:/postReply";
+
         Set<Post> posts = new HashSet<Post>();
-        post.setUser(userService.findByUsername(principal.getName()));
-        postRepository.save(post);
+        User currentUser = userService.findByUsername(principal.getName());
+        post.setUser(currentUser);
+
+        try {
+            Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+            post.setHeadshot(uploadResult.get("url").toString());
+            postRepository.save(post);
+        } catch (IOException e){
+            return "redirect:/postReply";
+        }
 
         return "redirect:/";
     }
