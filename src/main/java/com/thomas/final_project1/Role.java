@@ -3,7 +3,7 @@ package com.thomas.final_project1;
 import javax.persistence.*;
 import java.util.Collection;
 
-@Entity
+@Entity(name = "roleTable")
 public class Role
 {
     @Id

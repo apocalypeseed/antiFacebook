@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
-@Entity
+@Entity(name = "userTable")
 public class User
 {
     @Id
