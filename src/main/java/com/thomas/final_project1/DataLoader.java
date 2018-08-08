@@ -18,7 +18,7 @@ public class DataLoader implements CommandLineRunner
     @Override
     public void run(String... strings)
     {
-        if(roleRepository.findByRole("USER") != null)
+        if(roleRepository.countByRole("USER") > 0)
         {
             roleRepository.save(new Role("USER"));
             Role userRole = roleRepository.findByRole("USER");
