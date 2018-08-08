@@ -38,6 +38,19 @@ public class User
     @Column(name = "password")
     private String password;
 
+    public User(@NotNull @Size(min = 2) String firstName, @NotNull @Size(min = 2) String lastName, @NotNull @Size(min = 4) String email, @NotNull @Size(min = 4) String username, @NotNull @Size(min = 10) String password, boolean enabled, Set<Post> posts){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.posts = posts;
+    }
+
+    public User() {
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
