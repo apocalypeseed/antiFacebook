@@ -5,7 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-/*
+
 @Component
 public class DataLoader implements CommandLineRunner
 {
@@ -31,4 +31,3 @@ public class DataLoader implements CommandLineRunner
 
     }
 }
-*/
