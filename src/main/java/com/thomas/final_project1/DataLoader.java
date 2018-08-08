@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class DataLoader implements CommandLineRunner throws Exception
+public class DataLoader implements CommandLineRunner
 {
     @Autowired
     UserRepository userRepository;
@@ -16,7 +16,7 @@ public class DataLoader implements CommandLineRunner throws Exception
     RoleRepository roleRepository;
 
     @Override
-    public void run(String... strings)
+    public void run(String... strings) throws Exception
     {
         roleRepository.save(new Role("USER"));
         Role userRole = roleRepository.findByRole("USER");
