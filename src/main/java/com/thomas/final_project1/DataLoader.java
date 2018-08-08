@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class DataLoader implements CommandLineRunner
+public class DataLoader implements CommandLineRunner throws Exception
 {
     @Autowired
     UserRepository userRepository;
